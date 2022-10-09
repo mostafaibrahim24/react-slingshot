@@ -8,11 +8,20 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - run: npm i
+      - save_cache:
+          key: "npm-packages"
+          paths:
+            - /src/node_modules
       - run: npm run lint
   test:
     <<: *defaults
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - "npm-packages"
+      - run: npm i
       - run: npm run test
   analyze:
     <<: *defaults
